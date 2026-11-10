@@ -1,6 +1,6 @@
 streamlit
 pdfplumber
-transformers
+transformers>=4.38,<5
 torch
 spacy
 nltk
