@@ -1,6 +1,4 @@
-from io import BytesIO
-from xml.sax.saxutils import escape
-
+ 
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
@@ -8,22 +6,18 @@ from reportlab.platypus import (
 )
 
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib.pagesizes import A4
+from xml.sax.saxutils import escape
 
 
-def generate_report(summary, keywords, gaps):
+def generate_report(filename, summary, keywords, gaps):
 
-    buffer = BytesIO()
-
-    doc = SimpleDocTemplate(
-        buffer,
-        pagesize=A4
-    )
+    doc = SimpleDocTemplate(filename)
 
     styles = getSampleStyleSheet()
 
     content = []
 
+    # Report Title
     content.append(
         Paragraph(
             "ResearchSummarize AI Report",
@@ -33,6 +27,7 @@ def generate_report(summary, keywords, gaps):
 
     content.append(Spacer(1, 20))
 
+    # Summary
     content.append(
         Paragraph(
             "<b>Summary:</b><br/>" +
@@ -43,6 +38,7 @@ def generate_report(summary, keywords, gaps):
 
     content.append(Spacer(1, 20))
 
+    # Keywords
     content.append(
         Paragraph(
             "<b>Important Keywords:</b><br/>" +
@@ -53,6 +49,7 @@ def generate_report(summary, keywords, gaps):
 
     content.append(Spacer(1, 20))
 
+    # Research Gaps
     content.append(
         Paragraph(
             "<b>Research Gap Indicators:</b><br/>" +
@@ -61,9 +58,5 @@ def generate_report(summary, keywords, gaps):
         )
     )
 
+    # Generate PDF
     doc.build(content)
-
-    buffer.seek(0)
-
-    return buffer.getvalue()
- 
